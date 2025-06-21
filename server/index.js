@@ -157,8 +157,8 @@ const route0 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProper
   default: root,
   links
 }, Symbol.toStringTag, { value: "Module" }));
-const lunatecsImg = "/assets/lunatecs-DYXrR15G.jpg";
-const githubLogo = "/assets/Github-Dr8lduzb.png";
+const lunatecsImg = "/LunaScouter/assets/lunatecs-DYXrR15G.jpg";
+const githubLogo = "/LunaScouter/assets/Github-Dr8lduzb.png";
 const initialCounters = {
   "auto-l4": 0,
   "auto-l3": 0,
@@ -1166,7 +1166,7 @@ const route1 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProper
   __proto__: null,
   default: scouting
 }, Symbol.toStringTag, { value: "Module" }));
-const serverManifest = { "entry": { "module": "/assets/entry.client-GYH6YEgi.js", "imports": ["/assets/chunk-NL6KNZEE-b53XU3gX.js"], "css": [] }, "routes": { "root": { "id": "root", "parentId": void 0, "path": "", "index": void 0, "caseSensitive": void 0, "hasAction": false, "hasLoader": false, "hasClientAction": false, "hasClientLoader": false, "hasClientMiddleware": false, "hasErrorBoundary": true, "module": "/assets/root-tizIqZt0.js", "imports": ["/assets/chunk-NL6KNZEE-b53XU3gX.js"], "css": ["/assets/root--px6QPx_.css"], "clientActionModule": void 0, "clientLoaderModule": void 0, "clientMiddlewareModule": void 0, "hydrateFallbackModule": void 0 }, "routes/scouting": { "id": "routes/scouting", "parentId": "root", "path": void 0, "index": true, "caseSensitive": void 0, "hasAction": false, "hasLoader": false, "hasClientAction": false, "hasClientLoader": false, "hasClientMiddleware": false, "hasErrorBoundary": false, "module": "/assets/scouting-2df0wQiU.js", "imports": ["/assets/chunk-NL6KNZEE-b53XU3gX.js"], "css": [], "clientActionModule": void 0, "clientLoaderModule": void 0, "clientMiddlewareModule": void 0, "hydrateFallbackModule": void 0 } }, "url": "/assets/manifest-1dd0213d.js", "version": "1dd0213d", "sri": void 0 };
+const serverManifest = { "entry": { "module": "/LunaScouterassets/entry.client-GYH6YEgi.js", "imports": ["/LunaScouterassets/chunk-NL6KNZEE-b53XU3gX.js"], "css": [] }, "routes": { "root": { "id": "root", "parentId": void 0, "path": "", "index": void 0, "caseSensitive": void 0, "hasAction": false, "hasLoader": false, "hasClientAction": false, "hasClientLoader": false, "hasClientMiddleware": false, "hasErrorBoundary": true, "module": "/LunaScouterassets/root-tizIqZt0.js", "imports": ["/LunaScouterassets/chunk-NL6KNZEE-b53XU3gX.js"], "css": ["/LunaScouterassets/root--px6QPx_.css"], "clientActionModule": void 0, "clientLoaderModule": void 0, "clientMiddlewareModule": void 0, "hydrateFallbackModule": void 0 }, "routes/scouting": { "id": "routes/scouting", "parentId": "root", "path": void 0, "index": true, "caseSensitive": void 0, "hasAction": false, "hasLoader": false, "hasClientAction": false, "hasClientLoader": false, "hasClientMiddleware": false, "hasErrorBoundary": false, "module": "/LunaScouterassets/scouting-s9gC2W9a.js", "imports": ["/LunaScouterassets/chunk-NL6KNZEE-b53XU3gX.js"], "css": [], "clientActionModule": void 0, "clientLoaderModule": void 0, "clientMiddlewareModule": void 0, "hydrateFallbackModule": void 0 } }, "url": "/LunaScouterassets/manifest-03fc99b6.js", "version": "03fc99b6", "sri": void 0 };
 const assetsBuildDirectory = "build\\client";
 const basename = "/";
 const future = { "unstable_middleware": false, "unstable_optimizeDeps": false, "unstable_splitRouteModules": false, "unstable_subResourceIntegrity": false, "unstable_viteEnvironmentApi": false };
@@ -1174,7 +1174,7 @@ const ssr = true;
 const isSpaMode = false;
 const prerender = [];
 const routeDiscovery = { "mode": "lazy", "manifestPath": "/__manifest" };
-const publicPath = "/";
+const publicPath = "/LunaScouter";
 const entry = { module: entryServer };
 const routes = {
   "root": {
