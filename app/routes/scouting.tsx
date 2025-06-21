@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import lunatecsImg from "../../lunatecs.jpg";
+import githubLogo from "../../Github.png";
 
 interface Team {
   name: string;
@@ -19,13 +21,15 @@ interface ScoutingResult {
   action: string;
   notes: string;
   timestamp: string;
+  algeaRemovedAuto?: boolean;
+  algeaRemovedTeleop?: boolean;
 }
 
 const initialCounters: Counters = {
-  "auto-l1": 0,
-  "auto-l2": 0,
-  "auto-l3": 0,
   "auto-l4": 0,
+  "auto-l3": 0,
+  "auto-l2": 0,
+  "auto-l1": 0,
   "auto-net": 0,
   "auto-processor": 0,
   "teleop-l1": 0,
@@ -34,6 +38,8 @@ const initialCounters: Counters = {
   "teleop-l4": 0,
   "teleop-net": 0,
   "teleop-processor": 0,
+  "auto-algea-removed": 0,
+  "teleop-algea-removed": 0,
 };
 
 const actions = ["Parked", "Deep", "Shallow", "None"];
@@ -73,6 +79,8 @@ export default function Scouting() {
   const [deleteInput, setDeleteInput] = useState("");
   const [showDelete, setShowDelete] = useState(false);
   const [newDeleteCode, setNewDeleteCode] = useState("");
+  const [algeaRemovedAuto, setAlgeaRemovedAuto] = useState(false);
+  const [algeaRemovedTeleop, setAlgeaRemovedTeleop] = useState(false);
 
   const motivationalQuotes = [
     "You are making a difference!",
@@ -256,6 +264,8 @@ export default function Scouting() {
         action,
         notes,
         timestamp: new Date().toISOString(),
+        algeaRemovedAuto,
+        algeaRemovedTeleop,
       },
     ]);
     setMatch("");
@@ -265,6 +275,8 @@ export default function Scouting() {
     setDefense(false);
     setAction("");
     setNotes("");
+    setAlgeaRemovedAuto(false);
+    setAlgeaRemovedTeleop(false);
     triggerMotivationBtn(2500);
   }
 
@@ -309,11 +321,13 @@ export default function Scouting() {
                 onChange={e => setSelectedTeam(e.target.value)}
               >
                 <option value="">Select a team...</option>
-                {teams.map((t, i) => (
-                  <option key={i} value={t.number}>
-                    #{t.number} - {t.name}
-                  </option>
-                ))}
+                {[...teams]
+                  .sort((a, b) => parseInt(a.number, 10) - parseInt(b.number, 10))
+                  .map((t, i) => (
+                    <option key={i} value={t.number}>
+                      #{t.number} - {t.name}
+                    </option>
+                  ))}
               </select>
             </div>
             <div className="info-group flex-1">
@@ -361,8 +375,8 @@ export default function Scouting() {
               </div>
               <h3 className="section-title text-lg font-bold mb-2">Auto</h3>
               <div className="grid grid-cols-[120px_1fr_1fr_1fr] gap-y-2 gap-x-4">
-                {[1, 2, 3, 4].map(l => (
-                  <React.Fragment key={`auto-l${l}`}> 
+                {[4, 3, 2, 1].map(l => (
+                  <React.Fragment key={`auto-l${l}`}>
                     <span className="level-label col-span-1 flex items-center font-semibold text-black">L{l}</span>
                     <button className={`counter-btn plus col-span-1 w-12 h-12 flex items-center justify-center rounded-full text-3xl shadow-lg transition ${darkMode ? 'bg-black text-white hover:bg-gray-800' : 'bg-gray-600 text-white hover:bg-gray-700'}`} type="button" onClick={() => updateCounter(`auto-l${l}`, 1)}>+</button>
                     <div className="counter-display col-span-1 w-16 h-10 border-2 border-gray-400 rounded-full flex items-center justify-center bg-gray-50 text-lg font-bold text-black">{counters[`auto-l${l}`]}</div>
@@ -370,13 +384,19 @@ export default function Scouting() {
                   </React.Fragment>
                 ))}
                 {["net", "processor"].map(type => (
-                  <React.Fragment key={`auto-${type}`}> 
+                  <React.Fragment key={`auto-${type}`}>
                     <span className="level-label col-span-1 flex items-center font-semibold capitalize text-black">{type}</span>
                     <button className={`counter-btn plus col-span-1 w-12 h-12 flex items-center justify-center rounded-full text-3xl shadow-lg transition ${darkMode ? 'bg-black text-white hover:bg-gray-800' : 'bg-gray-600 text-white hover:bg-gray-700'}`} type="button" onClick={() => updateCounter(`auto-${type}`, 1)}>+</button>
                     <div className="counter-display col-span-1 w-16 h-10 border-2 border-gray-400 rounded-full flex items-center justify-center bg-gray-50 text-lg font-bold text-black">{counters[`auto-${type}`]}</div>
                     <button className={`counter-btn minus col-span-1 w-12 h-12 flex items-center justify-center rounded-full text-3xl shadow-lg transition ${darkMode ? 'bg-black text-white hover:bg-gray-800' : 'bg-gray-600 text-white hover:bg-gray-700'}`} type="button" onClick={() => updateCounter(`auto-${type}`, -1)}>-</button>
                   </React.Fragment>
                 ))}
+                <React.Fragment key="auto-algea-removed">
+                  <span className="level-label col-span-1 flex items-center font-semibold text-black">Algea removed</span>
+                  <button className={`counter-btn plus col-span-1 w-12 h-12 flex items-center justify-center rounded-full text-3xl shadow-lg transition ${darkMode ? 'bg-black text-white hover:bg-gray-800' : 'bg-gray-600 text-white hover:bg-gray-700'}`} type="button" onClick={() => updateCounter('auto-algea-removed', 1)}>+</button>
+                  <div className="counter-display col-span-1 w-16 h-10 border-2 border-gray-400 rounded-full flex items-center justify-center bg-gray-50 text-lg font-bold text-black">{counters['auto-algea-removed']}</div>
+                  <button className={`counter-btn minus col-span-1 w-12 h-12 flex items-center justify-center rounded-full text-3xl shadow-lg transition ${darkMode ? 'bg-black text-white hover:bg-gray-800' : 'bg-gray-600 text-white hover:bg-gray-700'}`} type="button" onClick={() => updateCounter('auto-algea-removed', -1)}>-</button>
+                </React.Fragment>
               </div>
             </div>
             {/* Teleop Section */}
@@ -387,8 +407,8 @@ export default function Scouting() {
               </div>
               <h3 className="section-title text-lg font-bold mb-2">Teleop</h3>
               <div className="grid grid-cols-[120px_1fr_1fr_1fr] gap-y-2 gap-x-4">
-                {[1, 2, 3, 4].map(l => (
-                  <React.Fragment key={`teleop-l${l}`}> 
+                {[4, 3, 2, 1].map(l => (
+                  <React.Fragment key={`teleop-l${l}`}>
                     <span className="level-label col-span-1 flex items-center font-semibold text-black">L{l}</span>
                     <button className={`counter-btn plus col-span-1 w-12 h-12 flex items-center justify-center rounded-full text-3xl shadow-lg transition ${darkMode ? 'bg-black text-white hover:bg-gray-800' : 'bg-gray-600 text-white hover:bg-gray-700'}`} type="button" onClick={() => updateCounter(`teleop-l${l}`, 1)}>+</button>
                     <div className="counter-display col-span-1 w-16 h-10 border-2 border-gray-400 rounded-full flex items-center justify-center bg-gray-50 text-lg font-bold text-black">{counters[`teleop-l${l}`]}</div>
@@ -396,13 +416,19 @@ export default function Scouting() {
                   </React.Fragment>
                 ))}
                 {["net", "processor"].map(type => (
-                  <React.Fragment key={`teleop-${type}`}> 
+                  <React.Fragment key={`teleop-${type}`}>
                     <span className="level-label col-span-1 flex items-center font-semibold capitalize text-black">{type}</span>
                     <button className={`counter-btn plus col-span-1 w-12 h-12 flex items-center justify-center rounded-full text-3xl shadow-lg transition ${darkMode ? 'bg-black text-white hover:bg-gray-800' : 'bg-gray-600 text-white hover:bg-gray-700'}`} type="button" onClick={() => updateCounter(`teleop-${type}`, 1)}>+</button>
                     <div className="counter-display col-span-1 w-16 h-10 border-2 border-gray-400 rounded-full flex items-center justify-center bg-gray-50 text-lg font-bold text-black">{counters[`teleop-${type}`]}</div>
                     <button className={`counter-btn minus col-span-1 w-12 h-12 flex items-center justify-center rounded-full text-3xl shadow-lg transition ${darkMode ? 'bg-black text-white hover:bg-gray-800' : 'bg-gray-600 text-white hover:bg-gray-700'}`} type="button" onClick={() => updateCounter(`teleop-${type}`, -1)}>-</button>
                   </React.Fragment>
                 ))}
+                <React.Fragment key="teleop-algea-removed">
+                  <span className="level-label col-span-1 flex items-center font-semibold text-black">Algea removed</span>
+                  <button className={`counter-btn plus col-span-1 w-12 h-12 flex items-center justify-center rounded-full text-3xl shadow-lg transition ${darkMode ? 'bg-black text-white hover:bg-gray-800' : 'bg-gray-600 text-white hover:bg-gray-700'}`} type="button" onClick={() => updateCounter('teleop-algea-removed', 1)}>+</button>
+                  <div className="counter-display col-span-1 w-16 h-10 border-2 border-gray-400 rounded-full flex items-center justify-center bg-gray-50 text-lg font-bold text-black">{counters['teleop-algea-removed']}</div>
+                  <button className={`counter-btn minus col-span-1 w-12 h-12 flex items-center justify-center rounded-full text-3xl shadow-lg transition ${darkMode ? 'bg-black text-white hover:bg-gray-800' : 'bg-gray-600 text-white hover:bg-gray-700'}`} type="button" onClick={() => updateCounter('teleop-algea-removed', -1)}>-</button>
+                </React.Fragment>
               </div>
             </div>
           </div>
@@ -580,9 +606,10 @@ export default function Scouting() {
   function renderDataTab() {
     function exportCSV() {
       if (scoutingData.length === 0) return;
-      let csv = 'Team,Match,Color,Auto L1,Auto L2,Auto L3,Auto L4,Auto Net,Auto Processor,Teleop L1,Teleop L2,Teleop L3,Teleop L4,Teleop Net,Teleop Processor,Moved from Start,Defense,Action,Notes,Timestamp\n';
+      // --- CSV header: L4, L3, L2, L1 order ---
+      let csv = 'Team,Match,Color,Auto L4,Auto L3,Auto L2,Auto L1,Auto Net,Auto Processor,Teleop L4,Teleop L3,Teleop L2,Teleop L1,Teleop Net,Teleop Processor,Moved from Start,Defense,Action,Notes,Timestamp\n';
       scoutingData.forEach(d => {
-        csv += `${d.team},${d.match},${d.color},${d.counters["auto-l1"]},${d.counters["auto-l2"]},${d.counters["auto-l3"]},${d.counters["auto-l4"]},${d.counters["auto-net"]},${d.counters["auto-processor"]},${d.counters["teleop-l1"]},${d.counters["teleop-l2"]},${d.counters["teleop-l3"]},${d.counters["teleop-l4"]},${d.counters["teleop-net"]},${d.counters["teleop-processor"]},${d.movedFromStart},${d.defense},${d.action},"${d.notes.replace(/"/g, '""')}",${d.timestamp}\n`;
+        csv += `${d.team},${d.match},${d.color},${d.counters["auto-l4"]},${d.counters["auto-l3"]},${d.counters["auto-l2"]},${d.counters["auto-l1"]},${d.counters["auto-net"]},${d.counters["auto-processor"]},${d.counters["teleop-l4"]},${d.counters["teleop-l3"]},${d.counters["teleop-l2"]},${d.counters["teleop-l1"]},${d.counters["teleop-net"]},${d.counters["teleop-processor"]},${d.movedFromStart},${d.defense},${d.action},"${d.notes.replace(/"/g, '""')}",${d.timestamp}\n`;
       });
       const blob = new Blob([csv], { type: "text/csv" });
       const url = URL.createObjectURL(blob);
@@ -620,14 +647,14 @@ export default function Scouting() {
                     <th className="px-2 py-1">Team</th>
                     <th className="px-2 py-1">Match</th>
                     <th className="px-2 py-1">Color</th>
-                    <th className="px-2 py-1">Auto L1</th>
-                    <th className="px-2 py-1">Auto L2</th>
-                    <th className="px-2 py-1">Auto L3</th>
                     <th className="px-2 py-1">Auto L4</th>
-                    <th className="px-2 py-1">Teleop L1</th>
-                    <th className="px-2 py-1">Teleop L2</th>
-                    <th className="px-2 py-1">Teleop L3</th>
+                    <th className="px-2 py-1">Auto L3</th>
+                    <th className="px-2 py-1">Auto L2</th>
+                    <th className="px-2 py-1">Auto L1</th>
                     <th className="px-2 py-1">Teleop L4</th>
+                    <th className="px-2 py-1">Teleop L3</th>
+                    <th className="px-2 py-1">Teleop L2</th>
+                    <th className="px-2 py-1">Teleop L1</th>
                     <th className="px-2 py-1">Action</th>
                     <th className="px-2 py-1">Notes</th>
                   </tr>
@@ -641,14 +668,14 @@ export default function Scouting() {
                         <td className="px-2 py-1">{d.team}</td>
                         <td className="px-2 py-1">{d.match}</td>
                         <td className="px-2 py-1">{d.color}</td>
-                        <td className="px-2 py-1">{d.counters["auto-l1"]}</td>
-                        <td className="px-2 py-1">{d.counters["auto-l2"]}</td>
-                        <td className="px-2 py-1">{d.counters["auto-l3"]}</td>
                         <td className="px-2 py-1">{d.counters["auto-l4"]}</td>
-                        <td className="px-2 py-1">{d.counters["teleop-l1"]}</td>
-                        <td className="px-2 py-1">{d.counters["teleop-l2"]}</td>
-                        <td className="px-2 py-1">{d.counters["teleop-l3"]}</td>
+                        <td className="px-2 py-1">{d.counters["auto-l3"]}</td>
+                        <td className="px-2 py-1">{d.counters["auto-l2"]}</td>
+                        <td className="px-2 py-1">{d.counters["auto-l1"]}</td>
                         <td className="px-2 py-1">{d.counters["teleop-l4"]}</td>
+                        <td className="px-2 py-1">{d.counters["teleop-l3"]}</td>
+                        <td className="px-2 py-1">{d.counters["teleop-l2"]}</td>
+                        <td className="px-2 py-1">{d.counters["teleop-l1"]}</td>
                         <td className="px-2 py-1">{d.action}</td>
                         <td className="px-2 py-1">{d.notes}</td>
                       </tr>
@@ -679,7 +706,13 @@ export default function Scouting() {
                 <div className="mt-2">
                   <b>Average Scores:</b>
                   <ul className="ml-4 list-disc">
+                    <li>Auto L4: {(teamData.reduce((sum, d) => sum + d.counters["auto-l4"], 0) / teamData.length).toFixed(1)}</li>
+                    <li>Auto L3: {(teamData.reduce((sum, d) => sum + d.counters["auto-l3"], 0) / teamData.length).toFixed(1)}</li>
+                    <li>Auto L2: {(teamData.reduce((sum, d) => sum + d.counters["auto-l2"], 0) / teamData.length).toFixed(1)}</li>
                     <li>Auto L1: {(teamData.reduce((sum, d) => sum + d.counters["auto-l1"], 0) / teamData.length).toFixed(1)}</li>
+                    <li>Teleop L4: {(teamData.reduce((sum, d) => sum + d.counters["teleop-l4"], 0) / teamData.length).toFixed(1)}</li>
+                    <li>Teleop L3: {(teamData.reduce((sum, d) => sum + d.counters["teleop-l3"], 0) / teamData.length).toFixed(1)}</li>
+                    <li>Teleop L2: {(teamData.reduce((sum, d) => sum + d.counters["teleop-l2"], 0) / teamData.length).toFixed(1)}</li>
                     <li>Teleop L1: {(teamData.reduce((sum, d) => sum + d.counters["teleop-l1"], 0) / teamData.length).toFixed(1)}</li>
                   </ul>
                 </div>
@@ -781,8 +814,36 @@ export default function Scouting() {
     );
   }
 
+  // Add icon in the bottom right corner of the main container, linking to lunatecs.org
   return (
-    <div className={`max-w-6xl mx-auto p-4 ${darkMode ? "bg-gray-900 text-white" : `${getThemeColor("bg")} ${getThemeColor("text")}`}`}> 
+    <div className={`max-w-6xl mx-auto p-4 ${darkMode ? "bg-gray-900 text-white" : `${getThemeColor("bg")} ${getThemeColor("text")}`}`} style={{ position: "relative" }}>
+      {/* Lunatecs logo bottom right */}
+      <a
+        href="https://lunatecs.org/"
+        target="_blank"
+        rel="noopener noreferrer"
+        style={{ position: "fixed", bottom: 16, right: 16, zIndex: 100 }}
+      >
+        <img
+          src={lunatecsImg}
+          alt="Lunatecs Logo"
+          style={{ width: 56, height: 56, borderRadius: 14, boxShadow: "0 2px 8px rgba(0,0,0,0.18)", border: "2px solid #fff", background: "#fff" }}
+        />
+      </a>
+      {/* GitHub button bottom left */}
+      <a
+        href="https://github.com/Lunatecs"
+        target="_blank"
+        rel="noopener noreferrer"
+        style={{ position: "fixed", bottom: 16, left: 16, zIndex: 100, display: "flex", alignItems: "center", textDecoration: "none" }}
+        aria-label="View on GitHub"
+      >
+        <img
+          src={githubLogo}
+          alt="GitHub Logo"
+          style={{ width: 44, height: 44, borderRadius: 12, boxShadow: "0 2px 8px rgba(0,0,0,0.18)", border: "2px solid #fff", background: "#fff" }}
+        />
+      </a>
       {renderTabs()}
       {tab === "scouting" && renderScoutingTab()}
       {tab === "configuration" && renderConfigurationTab()}

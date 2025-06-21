@@ -37,6 +37,57 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <ScrollRestoration />
         <Scripts />
       </body>
+      {/* Offline status icon */}
+      <div
+        id="offline-indicator"
+        style={{
+          position: "fixed",
+          right: "1rem",
+          bottom: "1rem",
+          zIndex: 1000,
+          background: "#f87171",
+          color: "white",
+          borderRadius: "50%",
+          width: "48px",
+          height: "48px",
+          alignItems: "center",
+          justifyContent: "center",
+          boxShadow: "0 2px 8px rgba(0,0,0,0.15)",
+          display: "none",
+        }}
+        title="You are offline"
+      >
+        <svg
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        >
+          <circle cx="12" cy="12" r="10" />
+          <line x1="8" y1="15" x2="16" y2="15" />
+        </svg>
+      </div>
+      <script
+        dangerouslySetInnerHTML={{
+          __html: `
+        function updateOfflineIndicator() {
+          var el = document.getElementById('offline-indicator');
+          if (!navigator.onLine) {
+            el.style.display = 'flex';
+          } else {
+            el.style.display = 'none';
+          }
+        }
+        window.addEventListener('online', updateOfflineIndicator);
+        window.addEventListener('offline', updateOfflineIndicator);
+        updateOfflineIndicator();
+      `,
+        }}
+      />
     </html>
   );
 }

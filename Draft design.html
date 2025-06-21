@@ -825,16 +825,10 @@ body.dark-mode .all-scouting-table td {
                         <div class="auto-section">
                             <h3 class="section-title">Auto</h3>
                             <div class="scoring-row">
-                                <span class="level-label">L1</span>
-                                <button class="counter-btn plus" onclick="updateCounter('auto-l1', 1)">+</button>
-                                <div class="counter-display" id="auto-l1-display">0</div>
-                                <button class="counter-btn minus" onclick="updateCounter('auto-l1', -1)">-</button>
-                            </div>
-                            <div class="scoring-row">
-                                <span class="level-label">L2</span>
-                                <button class="counter-btn plus" onclick="updateCounter('auto-l2', 1)">+</button>
-                                <div class="counter-display" id="auto-l2-display">0</div>
-                                <button class="counter-btn minus" onclick="updateCounter('auto-l2', -1)">-</button>
+                                <span class="level-label">L4</span>
+                                <button class="counter-btn plus" onclick="updateCounter('auto-l4', 1)">+</button>
+                                <div class="counter-display" id="auto-l4-display">0</div>
+                                <button class="counter-btn minus" onclick="updateCounter('auto-l4', -1)">-</button>
                             </div>
                             <div class="scoring-row">
                                 <span class="level-label">L3</span>
@@ -843,10 +837,16 @@ body.dark-mode .all-scouting-table td {
                                 <button class="counter-btn minus" onclick="updateCounter('auto-l3', -1)">-</button>
                             </div>
                             <div class="scoring-row">
-                                <span class="level-label">L4</span>
-                                <button class="counter-btn plus" onclick="updateCounter('auto-l4', 1)">+</button>
-                                <div class="counter-display" id="auto-l4-display">0</div>
-                                <button class="counter-btn minus" onclick="updateCounter('auto-l4', -1)">-</button>
+                                <span class="level-label">L2</span>
+                                <button class="counter-btn plus" onclick="updateCounter('auto-l2', 1)">+</button>
+                                <div class="counter-display" id="auto-l2-display">0</div>
+                                <button class="counter-btn minus" onclick="updateCounter('auto-l2', -1)">-</button>
+                            </div>
+                            <div class="scoring-row">
+                                <span class="level-label">L1</span>
+                                <button class="counter-btn plus" onclick="updateCounter('auto-l1', 1)">+</button>
+                                <div class="counter-display" id="auto-l1-display">0</div>
+                                <button class="counter-btn minus" onclick="updateCounter('auto-l1', -1)">-</button>
                             </div>
                             <div class="net-processor">
                                 <div class="scoring-row">
@@ -867,16 +867,10 @@ body.dark-mode .all-scouting-table td {
                         <div class="teleop-section">
                             <h3 class="section-title">Teleop</h3>
                             <div class="scoring-row">
-                                <span class="level-label">L1</span>
-                                <button class="counter-btn plus" onclick="updateCounter('teleop-l1', 1)">+</button>
-                                <div class="counter-display" id="teleop-l1-display">0</div>
-                                <button class="counter-btn minus" onclick="updateCounter('teleop-l1', -1)">-</button>
-                            </div>
-                            <div class="scoring-row">
-                                <span class="level-label">L2</span>
-                                <button class="counter-btn plus" onclick="updateCounter('teleop-l2', 1)">+</button>
-                                <div class="counter-display" id="teleop-l2-display">0</div>
-                                <button class="counter-btn minus" onclick="updateCounter('teleop-l2', -1)">-</button>
+                                <span class="level-label">L4</span>
+                                <button class="counter-btn plus" onclick="updateCounter('teleop-l4', 1)">+</button>
+                                <div class="counter-display" id="teleop-l4-display">0</div>
+                                <button class="counter-btn minus" onclick="updateCounter('teleop-l4', -1)">-</button>
                             </div>
                             <div class="scoring-row">
                                 <span class="level-label">L3</span>
@@ -885,10 +879,16 @@ body.dark-mode .all-scouting-table td {
                                 <button class="counter-btn minus" onclick="updateCounter('teleop-l3', -1)">-</button>
                             </div>
                             <div class="scoring-row">
-                                <span class="level-label">L4</span>
-                                <button class="counter-btn plus" onclick="updateCounter('teleop-l4', 1)">+</button>
-                                <div class="counter-display" id="teleop-l4-display">0</div>
-                                <button class="counter-btn minus" onclick="updateCounter('teleop-l4', -1)">-</button>
+                                <span class="level-label">L2</span>
+                                <button class="counter-btn plus" onclick="updateCounter('teleop-l2', 1)">+</button>
+                                <div class="counter-display" id="teleop-l2-display">0</div>
+                                <button class="counter-btn minus" onclick="updateCounter('teleop-l2', -1)">-</button>
+                            </div>
+                            <div class="scoring-row">
+                                <span class="level-label">L1</span>
+                                <button class="counter-btn plus" onclick="updateCounter('teleop-l1', 1)">+</button>
+                                <div class="counter-display" id="teleop-l1-display">0</div>
+                                <button class="counter-btn minus" onclick="updateCounter('teleop-l1', -1)">-</button>
                             </div>
                             <div class="net-processor">
                                 <div class="scoring-row">
@@ -1347,13 +1347,18 @@ body.dark-mode .all-scouting-table td {
             let summary = `<div style="text-align: left; margin-top: 24px;">`;
             summary += `<h3>Team ${selectedTeam} Performance Summary</h3>`;
             summary += `<p><strong>Matches Scouted:</strong> ${teamData.length}</p>`;
-            const avgAutoL1 = (teamData.reduce((sum, data) => sum + data.counters['auto-l1'], 0) / teamData.length).toFixed(1);
+            // L4, L3, L2, L1 order for averages
+            const avgAutoL4 = (teamData.reduce((sum, data) => sum + data.counters['auto-l4'], 0) / teamData.length).toFixed(1);
+            const avgAutoL3 = (teamData.reduce((sum, data) => sum + data.counters['auto-l3'], 0) / teamData.length).toFixed(1);
             const avgAutoL2 = (teamData.reduce((sum, data) => sum + data.counters['auto-l2'], 0) / teamData.length).toFixed(1);
-            const avgTeleopL1 = (teamData.reduce((sum, data) => sum + data.counters['teleop-l1'], 0) / teamData.length).toFixed(1);
+            const avgAutoL1 = (teamData.reduce((sum, data) => sum + data.counters['auto-l1'], 0) / teamData.length).toFixed(1);
+            const avgTeleopL4 = (teamData.reduce((sum, data) => sum + data.counters['teleop-l4'], 0) / teamData.length).toFixed(1);
+            const avgTeleopL3 = (teamData.reduce((sum, data) => sum + data.counters['teleop-l3'], 0) / teamData.length).toFixed(1);
             const avgTeleopL2 = (teamData.reduce((sum, data) => sum + data.counters['teleop-l2'], 0) / teamData.length).toFixed(1);
+            const avgTeleopL1 = (teamData.reduce((sum, data) => sum + data.counters['teleop-l1'], 0) / teamData.length).toFixed(1);
             summary += `<h4>Average Scores:</h4>`;
-            summary += `<p>Auto L1: ${avgAutoL1} | Auto L2: ${avgAutoL2}</p>`;
-            summary += `<p>Teleop L1: ${avgTeleopL1} | Teleop L2: ${avgTeleopL2}</p>`;
+            summary += `<p>Auto L4: ${avgAutoL4} | L3: ${avgAutoL3} | L2: ${avgAutoL2} | L1: ${avgAutoL1}</p>`;
+            summary += `<p>Teleop L4: ${avgTeleopL4} | L3: ${avgTeleopL3} | L2: ${avgTeleopL2} | L1: ${avgTeleopL1}</p>`;
             summary += `<h4>Recent Matches:</h4>`;
             teamData.slice(-3).forEach((data, index) => {
                 summary += `<p><strong>Match ${data.match}:</strong> ${data.color} alliance</p>`;
@@ -1367,16 +1372,13 @@ body.dark-mode .all-scouting-table td {
                 alert('No data to export!');
                 return;
             }
-
-            let csv = 'Team,Match,Color,Auto L1,Auto L2,Auto L3,Auto L4,Teleop L1,Teleop L2,Teleop L3,Teleop L4,Moved from Start,Defense,Actions,Notes,Timestamp\n';
-            
+            let csv = 'Team,Match,Color,Auto L4,Auto L3,Auto L2,Auto L1,Teleop L4,Teleop L3,Teleop L2,Teleop L1,Moved from Start,Defense,Actions,Notes,Timestamp\n';
             scoutingData.forEach(data => {
                 csv += `${data.team},${data.match},${data.color},`;
-                csv += `${data.counters['auto-l1']},${data.counters['auto-l2']},${data.counters['auto-l3']},${data.counters['auto-l4']},`;
-                csv += `${data.counters['teleop-l1']},${data.counters['teleop-l2']},${data.counters['teleop-l3']},${data.counters['teleop-l4']},`;
+                csv += `${data.counters['auto-l4']},${data.counters['auto-l3']},${data.counters['auto-l2']},${data.counters['auto-l1']},`;
+                csv += `${data.counters['teleop-l4']},${data.counters['teleop-l3']},${data.counters['teleop-l2']},${data.counters['teleop-l1']},`;
                 csv += `${data.movedFromStart},${data.defense},"${data.actions}","${data.notes.replace(/"/g, '""')}",${data.timestamp}\n`;
             });
-
             const blob = new Blob([csv], { type: 'text/csv' });
             const url = window.URL.createObjectURL(blob);
             const a = document.createElement('a');
