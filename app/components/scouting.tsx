@@ -61,8 +61,20 @@ export default function Scouting() {
   );
   // --- Move all other useState hooks below this line ---
   const [tab, setTab] = useState("scouting");
-  const [teams, setTeams] = useState<Team[]>([]);
-  const [scoutingData, setScoutingData] = useState<ScoutingResult[]>([]);
+  const [teams, setTeams] = useState<Team[]>(() => {
+    if (typeof window !== "undefined" && window.localStorage) {
+      const storedTeams = localStorage.getItem("scouting-teams");
+      if (storedTeams) return JSON.parse(storedTeams);
+    }
+    return [];
+  });
+  const [scoutingData, setScoutingData] = useState<ScoutingResult[]>(() => {
+    if (typeof window !== "undefined" && window.localStorage) {
+      const storedData = localStorage.getItem("scouting-data");
+      if (storedData) return JSON.parse(storedData);
+    }
+    return [];
+  });
   const [selectedTeam, setSelectedTeam] = useState("");
   const [match, setMatch] = useState("");
   const [color, setColor] = useState<"blue" | "red">("blue");
@@ -74,8 +86,20 @@ export default function Scouting() {
   const [teamName, setTeamName] = useState("");
   const [teamNumber, setTeamNumber] = useState("");
   const [selected, setSelected] = useState("");
-  const [darkMode, setDarkMode] = useState(false);
-  const [bgColor, setBgColor] = useState("gray");
+  const [darkMode, setDarkMode] = useState(() => {
+    if (typeof window !== "undefined" && window.localStorage) {
+      const storedDarkMode = localStorage.getItem("scouting-darkmode");
+      if (storedDarkMode !== null) return storedDarkMode === "true";
+    }
+    return false;
+  });
+  const [bgColor, setBgColor] = useState(() => {
+    if (typeof window !== "undefined" && window.localStorage) {
+      const storedBgColor = localStorage.getItem("scouting-bgcolor");
+      if (storedBgColor) return storedBgColor;
+    }
+    return "gray";
+  });
   const [deleteInput, setDeleteInput] = useState("");
   const [showDelete, setShowDelete] = useState(false);
   const [newDeleteCode, setNewDeleteCode] = useState("");
@@ -111,18 +135,7 @@ export default function Scouting() {
     setShowMotivationModal(true);
   }
 
-  // Load from localStorage on mount
-  React.useEffect(() => {
-    if (typeof window === "undefined" || !window.localStorage) return;
-    const storedTeams = localStorage.getItem("scouting-teams");
-    if (storedTeams) setTeams(JSON.parse(storedTeams));
-    const storedData = localStorage.getItem("scouting-data");
-    if (storedData) setScoutingData(JSON.parse(storedData));
-    const storedDarkMode = localStorage.getItem("scouting-darkmode");
-    if (storedDarkMode !== null) setDarkMode(storedDarkMode === "true");
-    const storedBgColor = localStorage.getItem("scouting-bgcolor");
-    if (storedBgColor) setBgColor(storedBgColor);
-  }, []);
+  // No need to load darkMode and bgColor from localStorage on mount; handled by lazy initialization
 
   // Save teams to localStorage when changed
   React.useEffect(() => {
@@ -215,14 +228,16 @@ export default function Scouting() {
   function renderTabs() {
     return (
       <div className={`nav-tabs flex ${getThemeColor("bg")} border-b ${getThemeColor("border")} mb-6`}>
-        {[
+        {[ 
           { key: "configuration", label: "Configuration" },
           { key: "scouting", label: "Scouting" },
           { key: "data", label: "Data" }
         ].map(tabObj => (
           <button
             key={tabObj.key}
-            className={`nav-tab flex-1 py-4 text-xl font-semibold rounded-t-lg transition-all ${tab === tabObj.key ? `bg-white ${getThemeColor("text")} border-b-4 ${bgColor === "red" ? "border-red-500" : bgColor === "blue" ? "border-blue-500" : "border-gray-500"}` : `${getThemeColor("bg")} ${getThemeColor("text")}`}`}
+            className={`nav-tab flex-1 py-4 text-xl font-semibold rounded-t-lg transition-all ${tab === tabObj.key
+              ? `bg-white ${darkMode ? "text-black" : getThemeColor("text")} border-b-4 ${bgColor === "red" ? "border-red-500" : bgColor === "blue" ? "border-blue-500" : "border-gray-500"}`
+              : `${getThemeColor("bg")} ${getThemeColor("text")}`}`}
             onClick={() => setTab(tabObj.key)}
           >
             {tabObj.label}
@@ -721,6 +736,42 @@ export default function Scouting() {
         </div>
         <div className="data-right w-full md:w-[300px] flex flex-col gap-4 mt-4 md:mt-0">
           <button className={`action-button export-btn py-3 rounded ${getThemeColor("btn")}`} onClick={exportCSV}>Export as CSV</button>
+          <button className={`action-button export-btn py-3 rounded ${getThemeColor("btn")}`} onClick={() => {
+            const json = JSON.stringify(scoutingData, null, 2);
+            const blob = new Blob([json], { type: "application/json" });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement("a");
+            a.href = url;
+            a.download = `scouting_data_${new Date().toISOString().split('T')[0]}.json`;
+            a.click();
+            URL.revokeObjectURL(url);
+          }}>Export as JSON</button>
+          <button className={`action-button export-btn py-3 rounded ${getThemeColor("btn")}`} onClick={() => document.getElementById('import-json-input')?.click()}>Import JSON</button>
+          <input
+            id="import-json-input"
+            type="file"
+            accept=".json"
+            style={{ display: 'none' }}
+            onChange={e => {
+              const file = e.target.files?.[0];
+              if (!file) return;
+              const reader = new FileReader();
+              reader.onload = () => {
+                try {
+                  const data = JSON.parse(reader.result as string);
+                  if (Array.isArray(data)) {
+                    setScoutingData(data);
+                    alert("Scouting data imported successfully.");
+                  } else {
+                    alert("Invalid JSON format. Expected an array of scouting data.");
+                  }
+                } catch {
+                  alert("Invalid JSON file.");
+                }
+              };
+              reader.readAsText(file);
+            }}
+          />
           <div className="delete-section mt-6 p-4 rounded-xl border border-red-400 bg-red-50">
             <h4 className="font-bold text-red-600 mb-2">Delete All Scouting Data</h4>
             {!showDelete ? (
