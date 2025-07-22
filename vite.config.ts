@@ -14,6 +14,7 @@ export default defineConfig({
     tsconfigPaths(),
     VitePWA({
       registerType: "autoUpdate",
+      base: "/LunaScouter/",
       manifest: {
         name: "LunaScouter",
         short_name: "LunaScouter",
