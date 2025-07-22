@@ -5,6 +5,8 @@ import tsconfigPaths from "vite-tsconfig-paths";
 import { VitePWA } from "vite-plugin-pwa";
 
 export default defineConfig({
+  root: ".",
+  base: "/LunaScouter/",
   build: {
     outDir: "dist",
   },
