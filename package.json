@@ -7,8 +7,7 @@
     "build": "vite build",
     "dev": "vite",
     "preview": "vite preview",
-    "typecheck": "tsc",
-    "predeploy": "npm run build"
+    "typecheck": "tsc"
   },
   "dependencies": {
     "react": "^19.1.0",
