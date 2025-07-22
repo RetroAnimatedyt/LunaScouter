@@ -6,6 +6,7 @@ import { VitePWA } from "vite-plugin-pwa";
 export default defineConfig({
   root: ".",
   publicDir: "public",
+  base: "LunaScouter",
   build: {
     outDir: "dist",
     assetsDir: "assets",

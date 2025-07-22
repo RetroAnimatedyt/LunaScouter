@@ -17,13 +17,13 @@
     "react-toastify": "^11.0.5"
   },
   "devDependencies": {
-    "react-router-dom": "^7.6.3",
     "@react-router/dev": "^7.5.3",
     "@tailwindcss/vite": "^4.1.8",
     "@types/node": "^20",
     "@types/react": "^19.1.2",
     "@types/react-dom": "^19.1.2",
     "gh-pages": "^6.3.0",
+    "react-router-dom": "^7.6.3",
     "tailwindcss": "^4.1.8",
     "typescript": "^5.8.3",
     "vite": "^6.3.3",
