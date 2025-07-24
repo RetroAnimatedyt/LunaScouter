@@ -7,7 +7,7 @@ import './app.css';
 // Register the service worker
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
-    navigator.serviceWorker.register('/sw.js')
+    navigator.serviceWorker.register('sw.js')
       .then((registration) => {
         console.log('ServiceWorker registration successful with scope: ', registration.scope);
       })
@@ -17,7 +17,7 @@ if ('serviceWorker' in navigator) {
   });
 }
 
-const router = createBrowserRouter(routes);
+const router = createBrowserRouter(routes, { basename: '/LunaScouter' });
 
 createRoot(document.getElementById('root') as HTMLElement).render(
   <StrictMode>
